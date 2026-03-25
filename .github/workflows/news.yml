@@ -1,0 +1,22 @@
+name: Daily AI News Email
+
+on:
+  schedule:
+    - cron: "0 7 * * *"  # Runs daily at 7AM UTC
+  workflow_dispatch:  # allows manual run
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        run: python news_bot.py
+        env:
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }} # Pass your sender email secret
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }} # Pass your App Password secret
